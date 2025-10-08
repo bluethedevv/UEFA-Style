@@ -68,7 +68,6 @@ p { margin-top: 0.5rem; color:#ccc; }
 
 /* ===== Footer ===== */
 footer { text-align:center; padding:2rem; border-top:1px solid rgba(255,255,255,0.1); color:#888; font-size:0.9rem; }
-
 </style>
 </head>
 <body>
@@ -79,25 +78,25 @@ footer { text-align:center; padding:2rem; border-top:1px solid rgba(255,255,255,
 </header>
 
 <section class="matches">
-  <div class="match-card" data-match="1" data-time="14:05">
+  <div class="match-card" data-match="1" data-datetime="2025-10-11T14:05:00">
     <div class="match-header">Match 1 – 14:05 <span class="status"></span></div>
     <div class="teams">Abdi ⚽ vs ⚽ Borislav</div>
     <div class="prob">Gewinnwahrscheinlichkeit: Abdi 52% – 48% Borislav</div>
   </div>
 
-  <div class="match-card" data-match="2" data-time="15:05">
+  <div class="match-card" data-match="2" data-datetime="2025-10-11T15:05:00">
     <div class="match-header">Match 2 – 15:05 <span class="status"></span></div>
     <div class="teams">Radion ⚽ vs ⚽ Borislav</div>
     <div class="prob">Gewinnwahrscheinlichkeit: Radion 56% – 44% Borislav</div>
   </div>
 
-  <div class="match-card" data-match="3" data-time="16:05">
+  <div class="match-card" data-match="3" data-datetime="2025-10-11T16:05:00">
     <div class="match-header">Match 3 – 16:05 <span class="status"></span></div>
     <div class="teams">Elias ⚽ vs ⚽ Radion</div>
     <div class="prob">Gewinnwahrscheinlichkeit: Elias 50% – 50% Radion</div>
   </div>
 
-  <div class="match-card" data-match="4" data-time="17:05">
+  <div class="match-card" data-match="4" data-datetime="2025-10-11T17:05:00">
     <div class="match-header">Match 4 – 17:05 <span class="status"></span></div>
     <div class="teams">Abdi ⚽ vs ⚽ Elias</div>
     <div class="prob">Gewinnwahrscheinlichkeit: Abdi 54% – 46% Elias</div>
@@ -118,31 +117,7 @@ footer { text-align:center; padding:2rem; border-top:1px solid rgba(255,255,255,
 <footer>© 2025 U13 Championship | Erstellt von Abdi ⚽</footer>
 
 <script>
-// ===== LIVE Status =====
-function updateMatchStatus() {
-  const now = new Date();
-  const currentTime = now.getHours()*60 + now.getMinutes();
-
-  document.querySelectorAll(".match-card").forEach(card=>{
-    const [h,m] = card.dataset.time.split(":").map(Number);
-    const matchStart = h*60 + m;
-    const matchEnd = matchStart + 60;
-
-    const status = card.querySelector(".status");
-    if(currentTime>=matchStart && currentTime<matchEnd){
-      const minute = currentTime - matchStart;
-      status.innerHTML = `<span class="live-badge">LIVE</span> <span class="minute">${minute}’</span>`;
-    }else if(currentTime>=matchEnd){
-      status.innerHTML = `<span style="color:#ccc;">Beendet</span>`;
-    }else{
-      status.innerHTML = `<span style="color:#ccc;">Noch nicht gestartet</span>`;
-    }
-  });
-}
-setInterval(updateMatchStatus,30000);
-updateMatchStatus();
-
-// ===== Match Overlay =====
+// ===== Matchdaten & Spieler =====
 const matchData = {
   1: { teams:["Abdi","Borislav"], players:["Abdi","Borislav"] },
   2: { teams:["Radion","Borislav"], players:["Radion","Borislav"] },
@@ -150,6 +125,28 @@ const matchData = {
   4: { teams:["Abdi","Elias"], players:["Abdi","Elias"] },
 };
 
+// ===== Live Status nach Datum =====
+function updateMatchStatus() {
+  const now = new Date();
+  document.querySelectorAll(".match-card").forEach(card=>{
+    const dateTime = new Date(card.dataset.datetime);
+    const status = card.querySelector(".status");
+
+    if(now >= dateTime && now < new Date(dateTime.getTime()+60*60*1000)){
+      // Live
+      const minute = Math.floor((now-dateTime)/60000);
+      status.innerHTML = `<span class="live-badge">LIVE</span> <span class="minute">${minute}’</span>`;
+    } else if(now >= new Date(dateTime.getTime()+60*60*1000)){
+      status.innerHTML = `<span style="color:#ccc;">Beendet</span>`;
+    } else {
+      status.innerHTML = `<span style="color:#ccc;">Noch nicht gestartet</span>`;
+    }
+  });
+}
+setInterval(updateMatchStatus,30000);
+updateMatchStatus();
+
+// ===== Overlay / Match Details =====
 document.querySelectorAll(".match-card").forEach(card=>{
   card.addEventListener("click", ()=>{
     const id = card.dataset.match;
@@ -180,8 +177,6 @@ document.querySelectorAll(".match-card").forEach(card=>{
 document.getElementById("closeBtn").addEventListener("click", ()=>{
   document.getElementById("overlay").style.display="none";
 });
-
 </script>
 </body>
 </html>
-
