@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>U13 Championship – UEFA Style</title>
 <style>
-/* ===== Grunddesign ===== */
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
@@ -13,8 +12,6 @@ body {
   color: white;
   overflow-x: hidden;
 }
-
-/* ===== Menüleiste ===== */
 nav {
   display: flex;
   justify-content: space-between;
@@ -28,15 +25,10 @@ nav ul { list-style:none; display:flex; gap:1.5rem; margin:0; padding:0; }
 nav ul li a { color:white; text-decoration:none; font-weight:bold; transition:0.3s; }
 nav ul li a:hover { color:#ffd700; }
 
-/* ===== Header ===== */
-header {
-  text-align: center;
-  padding: 2rem;
-}
+header { text-align: center; padding: 2rem; }
 h1 { font-size: 2.5rem; letter-spacing:2px; text-transform:uppercase; color:#ffd700; }
 p { margin-top:0.5rem; color:#ccc; }
 
-/* ===== Matches Grid ===== */
 .matches { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1.5rem; padding: 2rem; }
 .match-card {
   background: rgba(255,255,255,0.08);
@@ -54,7 +46,6 @@ p { margin-top:0.5rem; color:#ccc; }
 @keyframes pulse { 0%{opacity:1;}50%{opacity:0.4;}100%{opacity:1;} }
 .minute { color:#00ff66; font-weight:bold; font-size:0.9rem; }
 
-/* ===== Overlay / Modal ===== */
 .overlay {
   position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:none; justify-content:center; align-items:center; z-index:100;
 }
@@ -65,10 +56,8 @@ p { margin-top:0.5rem; color:#ccc; }
 }
 .close-btn { position:absolute; top:1rem; right:1rem; font-size:1.5rem; cursor:pointer; color:#ffd700; }
 
-/* ===== Scoreboard ===== */
 .scoreboard { font-size:2rem; font-weight:bold; margin:1rem 0; color:#ffd700; text-align:center; }
 
-/* ===== Player Grid inside Overlay ===== */
 .player-grid {
   display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin-top:1rem;
 }
@@ -80,7 +69,6 @@ p { margin-top:0.5rem; color:#ccc; }
 .player-name { font-weight:bold; color:#ffd700; margin-bottom:0.25rem; }
 .player-role { font-size:0.85rem; color:#ccc; }
 
-/* ===== Tabelle ===== */
 .table-container { padding: 2rem; }
 table {
   width:100%; border-collapse: collapse; background: rgba(255,255,255,0.05); border-radius:10px; overflow:hidden;
@@ -89,13 +77,11 @@ th, td { padding:1rem; text-align:center; color:white; }
 th { background: rgba(255,215,0,0.2); }
 tr:nth-child(even) { background: rgba(255,255,255,0.05); }
 
-/* ===== Footer ===== */
 footer { text-align:center; padding:2rem; border-top:1px solid rgba(255,255,255,0.1); color:#888; font-size:0.9rem; }
 </style>
 </head>
 <body>
 
-<!-- ===== Menü ===== -->
 <nav>
   <h2>U13 Championship</h2>
   <ul>
@@ -110,7 +96,6 @@ footer { text-align:center; padding:2rem; border-top:1px solid rgba(255,255,255,
   <p>Offizielles Turnier – 11. Oktober 2025</p>
 </header>
 
-<!-- ===== Matches ===== -->
 <section class="matches">
   <div class="match-card" data-match="1" data-datetime="2025-10-11T14:05:00">
     <div class="match-header">Match 1 – 14:05 <span class="status"></span></div>
@@ -137,7 +122,6 @@ footer { text-align:center; padding:2rem; border-top:1px solid rgba(255,255,255,
   </div>
 </section>
 
-<!-- ===== Tabelle ===== -->
 <section class="table-container">
   <h2 style="color:#ffd700; text-align:center; margin-bottom:1rem;">Turniertabelle</h2>
   <table>
@@ -152,15 +136,11 @@ footer { text-align:center; padding:2rem; border-top:1px solid rgba(255,255,255,
       </tr>
     </thead>
     <tbody id="standings">
-      <tr><td>Abdi</td><td>2</td><td>2</td><td>0</td><td>0</td><td>4</td></tr>
-      <tr><td>Borislav</td><td>2</td><td>0</td><td>0</td><td>2</td><td>0</td></tr>
-      <tr><td>Radion</td><td>2</td><td>1</td><td>0</td><td>1</td><td>2</td></tr>
-      <tr><td>Elias</td><td>2</td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+      <!-- Wird automatisch generiert -->
     </tbody>
   </table>
 </section>
 
-<!-- Overlay / Modal -->
 <div class="overlay" id="overlay">
   <div class="overlay-content">
     <span class="close-btn" id="closeBtn">&times;</span>
@@ -175,21 +155,55 @@ footer { text-align:center; padding:2rem; border-top:1px solid rgba(255,255,255,
 <footer>© 2025 U13 Championship | Erstellt von Abdi ⚽</footer>
 
 <script>
-// ===== Matchdaten & Spieler =====
+// ===== Matchdaten & Spieler (alle Scores 0) =====
 const matchData = {
-  1: { teams:["Abdi","Borislav"], players:["Abdi","Borislav"], datetime:"2025-10-11T14:05:00" },
-  2: { teams:["Radion","Borislav"], players:["Radion","Borislav"], datetime:"2025-10-11T15:05:00" },
-  3: { teams:["Elias","Radion"], players:["Elias","Radion"], datetime:"2025-10-11T16:05:00" },
-  4: { teams:["Abdi","Elias"], players:["Abdi","Elias"], datetime:"2025-10-11T17:05:00" },
+  1: { teams:["Abdi","Borislav"], players:["Abdi","Borislav"], datetime:"2025-10-11T14:05:00", score:[0,0] },
+  2: { teams:["Radion","Borislav"], players:["Radion","Borislav"], datetime:"2025-10-11T15:05:00", score:[0,0] },
+  3: { teams:["Elias","Radion"], players:["Elias","Radion"], datetime:"2025-10-11T16:05:00", score:[0,0] },
+  4: { teams:["Abdi","Elias"], players:["Abdi","Elias"], datetime:"2025-10-11T17:05:00", score:[0,0] },
 };
 
-// ===== Live Status nach Datum =====
+// ===== Tabelle automatisch berechnen =====
+function updateStandings() {
+  const teams = {};
+  Object.values(matchData).forEach(match => {
+    match.teams.forEach(team => {
+      if(!teams[team]) teams[team] = { played:0, wins:0, draws:0, losses:0, points:0 };
+    });
+  });
+  Object.values(matchData).forEach(match => {
+    const [scoreA, scoreB] = match.score;
+    const [teamA, teamB] = match.teams;
+    if(scoreA > 0 || scoreB > 0){ // nur wenn Score manuell eingetragen
+      teams[teamA].played++; teams[teamB].played++;
+      if(scoreA>scoreB){ teams[teamA].wins++; teams[teamA].points+=2; teams[teamB].losses++; }
+      else if(scoreA<scoreB){ teams[teamB].wins++; teams[teamB].points+=2; teams[teamA].losses++; }
+      else{ teams[teamA].draws++; teams[teamB].draws++; teams[teamA].points+=1; teams[teamB].points+=1; }
+    }
+  });
+
+  const tbody = document.getElementById("standings");
+  tbody.innerHTML = "";
+  for(const team in teams){
+    const t = teams[team];
+    tbody.innerHTML += `<tr>
+      <td>${team}</td>
+      <td>${t.played}</td>
+      <td>${t.wins}</td>
+      <td>${t.draws}</td>
+      <td>${t.losses}</td>
+      <td>${t.points}</td>
+    </tr>`;
+  }
+}
+updateStandings();
+
+// ===== Live Status =====
 function updateMatchStatus() {
   const now = new Date();
   document.querySelectorAll(".match-card").forEach(card=>{
     const dateTime = new Date(card.dataset.datetime);
     const status = card.querySelector(".status");
-
     if(now >= dateTime && now < new Date(dateTime.getTime()+60*60*1000)){
       const minute = Math.floor((now-dateTime)/60000);
       status.innerHTML = `<span class="live-badge">LIVE</span> <span class="minute">${minute}’</span>`;
@@ -214,7 +228,7 @@ document.querySelectorAll(".match-card").forEach(card=>{
     const dateTimeEl = document.getElementById("matchDateTime");
 
     title.textContent = `Match: ${card.querySelector(".teams").textContent}`;
-    scoreboard.textContent = "0 - 0";
+    scoreboard.textContent = "0 - 0"; // bleibt immer 0-0
     container.innerHTML = "";
 
     const matchDate = new Date(matchData[id].datetime);
@@ -234,10 +248,10 @@ document.querySelectorAll(".match-card").forEach(card=>{
     overlay.style.display="flex";
   });
 });
-
 document.getElementById("closeBtn").addEventListener("click", ()=>{
   document.getElementById("overlay").style.display="none";
 });
 </script>
 </body>
 </html>
+
